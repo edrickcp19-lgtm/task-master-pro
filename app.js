@@ -1,4 +1,4 @@
-// 1. Selección de elementos con validación
+// Selección de elementos
 const taskForm = document.getElementById('task-form');
 const taskInput = document.getElementById('task-input');
 const taskContainer = document.getElementById('task-container');
@@ -6,16 +6,16 @@ const taskCountLabel = document.getElementById('task-count');
 
 let tasks = [];
 
-// 5. Cargar tareas al iniciar (Persistencia)
+// 5. Cargar tareas al iniciar
 document.addEventListener('DOMContentLoaded', () => {
-    const savedData = localStorage.getItem('myTasksPro');
-    if (savedData) {
-        tasks = JSON.parse(savedData);
+    const data = localStorage.getItem('myTasksPro');
+    if (data) {
+        tasks = JSON.parse(data);
         render();
     }
 });
 
-// 1. Evento para capturar el formulario
+// 1. Evento de escucha para el formulario
 if (taskForm) {
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -27,40 +27,35 @@ if (taskForm) {
     });
 }
 
-// 2. Crear nueva tarea
+// 2. Función para crear tarea
 function createTask(text) {
-    const newTask = {
-        id: Date.now(),
-        text: text
-    };
+    const newTask = { id: Date.now(), text: text };
     tasks.push(newTask);
     saveAndRender();
 }
 
-// 3. Eliminar tarea
+// 3. Función para eliminar
 function deleteTask(id) {
     tasks = tasks.filter(t => t.id !== id);
     saveAndRender();
 }
 
-// 4. Guardar en LocalStorage y renderizar
+// 4. Guardar en LocalStorage y Renderizar
 function saveAndRender() {
     localStorage.setItem('myTasksPro', JSON.stringify(tasks));
     render();
 }
 
-// Función para dibujar las tareas en el HTML
 function render() {
-    if (!taskContainer) return; // Si no hay contenedor, no hace nada
-
+    if (!taskContainer) return;
+    
     taskContainer.innerHTML = '';
     
-    // Actualizar contador con validación (Evita el TypeError)
+    // CORRECCIÓN DEL ERROR: Validamos si existe el contador antes de usarlo
     if (taskCountLabel) {
         taskCountLabel.textContent = `${tasks.length} Tarea${tasks.length !== 1 ? 's' : ''}`;
     }
 
-    // Dibujar cada elemento
     tasks.forEach(task => {
         const article = document.createElement('article');
         article.className = 'task-item';
@@ -73,9 +68,8 @@ function render() {
             <button class="delete-btn">Eliminar</button>
         `;
 
-        // Evento de eliminación
         article.querySelector('.delete-btn').onclick = () => deleteTask(task.id);
-        
         taskContainer.appendChild(article);
     });
 }
+
