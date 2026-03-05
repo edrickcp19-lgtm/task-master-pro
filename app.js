@@ -1,68 +1,69 @@
-// 1. Selección de elementos del DOM
+// 1. Selección de elementos con validación
 const taskForm = document.getElementById('task-form');
 const taskInput = document.getElementById('task-input');
 const taskContainer = document.getElementById('task-container');
-const taskCountLabel = document.getElementById('task-count'); // Elemento para el contador
+const taskCountLabel = document.getElementById('task-count');
 
-// Array global de tareas
 let tasks = [];
 
-// 5. Cargar tareas al iniciar (DOMContentLoaded)
+// 5. Cargar tareas al iniciar (Persistencia)
 document.addEventListener('DOMContentLoaded', () => {
-    const data = localStorage.getItem('myTasksPro');
-    if (data) {
-        tasks = JSON.parse(data);
-        render(); // Dibujar lo que recuperamos
+    const savedData = localStorage.getItem('myTasksPro');
+    if (savedData) {
+        tasks = JSON.parse(savedData);
+        render();
     }
 });
 
-// 1. Evento de escucha para el formulario (Añadir tarea)
-taskForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const text = taskInput.value.trim();
-    
-    if (text) {
-        createTask(text);
-        taskInput.value = ''; // 2. Limpiar el input tras añadir
-    }
-});
+// 1. Evento para capturar el formulario
+if (taskForm) {
+    taskForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = taskInput.value.trim();
+        if (text) {
+            createTask(text);
+            taskInput.value = ''; // 2. Limpiar input
+        }
+    });
+}
 
-// 2. Función para crear el objeto de tarea
+// 2. Crear nueva tarea
 function createTask(text) {
     const newTask = {
-        id: Date.now(), // ID único basado en tiempo
+        id: Date.now(),
         text: text
     };
     tasks.push(newTask);
     saveAndRender();
 }
 
-// 3. Función para eliminar tarea por ID
+// 3. Eliminar tarea
 function deleteTask(id) {
     tasks = tasks.filter(t => t.id !== id);
     saveAndRender();
 }
 
-// 4. Guardar en LocalStorage y Actualizar Vista
+// 4. Guardar en LocalStorage y renderizar
 function saveAndRender() {
     localStorage.setItem('myTasksPro', JSON.stringify(tasks));
     render();
 }
 
-// Función principal de dibujo (Renderizado)
+// Función para dibujar las tareas en el HTML
 function render() {
-    // Limpiamos el contenedor para no duplicar
+    if (!taskContainer) return; // Si no hay contenedor, no hace nada
+
     taskContainer.innerHTML = '';
     
-    // Actualizar el contador (Evita el error que tenías)
+    // Actualizar contador con validación (Evita el TypeError)
     if (taskCountLabel) {
         taskCountLabel.textContent = `${tasks.length} Tarea${tasks.length !== 1 ? 's' : ''}`;
     }
 
-    // Dibujar cada tarea como un <article>
+    // Dibujar cada elemento
     tasks.forEach(task => {
         const article = document.createElement('article');
-        article.className = 'task-item'; // Clase de tu CSS
+        article.className = 'task-item';
         
         article.innerHTML = `
             <div class="task-content">
@@ -72,7 +73,7 @@ function render() {
             <button class="delete-btn">Eliminar</button>
         `;
 
-        // Asignar el evento de borrado al botón de esta tarea específica
+        // Evento de eliminación
         article.querySelector('.delete-btn').onclick = () => deleteTask(task.id);
         
         taskContainer.appendChild(article);
