@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Master Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Task Master</h1>
+    </header>
+
+    <div class="container">
+        <aside>
+            <nav>
+                <ul>
+                    <li><a href="#">Hoy</a></li>
+                    <li><a href="#">Pendientes</a></li>
+                    <li><a href="#">Completadas</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main>
+            <section class="task-form-container">
+                <form id="task-form" style="margin-bottom: 20px; display: flex; gap: 10px;">
+                    <input type="text" id="task-input" placeholder="¿Qué hay que hacer?" required 
+                           style="flex-grow: 1; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+                    <button type="submit" style="padding: 10px 20px; cursor: pointer; background: #2ecc71; color: white; border: none; border-radius: 5px;">
+                        Añadir
+                    </button>
+                </form>
+            </section>
+
+            <section class="task-list">
+                <h2>Mis Tareas</h2>
+		<span id="task-count" class="badge priority-medium">0 Tareas</span>
+                <div id="task-container">
+                    </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+    
