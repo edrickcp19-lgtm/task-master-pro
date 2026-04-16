@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow Pro | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { primary: '#6366f1' } } }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300 min-h-screen">
+    
+    <header class="bg-indigo-600 dark:bg-indigo-800 p-4 text-center text-white shadow-md">
+        <h1 class="text-2xl font-bold tracking-tight">TaskFlow Pro</h1>
+    </header>
+
+    <div class="container mx-auto flex flex-col md:flex-row max-w-6xl p-6 gap-6">
+        <aside class="w-full md:w-1/4 space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <nav>
+                    <button id="theme-toggle" class="w-full py-2 px-4 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center gap-2 hover:ring-2 ring-indigo-500 transition-all text-sm">
+                        <span class="dark:hidden">🌙 Modo Oscuro</span>
+                        <span class="hidden dark:inline">☀️ Modo Claro</span>
+                    </button>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Estadísticas</h3>
+                    <div class="grid grid-cols-1 gap-4 text-sm">
+                        <div class="flex justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                            <span>Total</span> <span id="stats-total" class="font-bold text-indigo-600">0</span>
+                        </div>
+                        <div class="flex justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                            <span>Hechas</span> <span id="stats-completed" class="font-bold text-green-600">0</span>
+                        </div>
+                        <div class="flex justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                            <span>Pendientes</span> <span id="stats-pending" class="font-bold text-amber-600">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 space-y-6">
+            <section class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <form id="task-form" class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="task-input" placeholder="¿Qué tienes pendiente?" required 
+                           class="flex-1 p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg active:scale-95 transition-all">
+                        Añadir
+                    </button>
+                </form>
+            </section>
+
+            <section class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                <div class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-lg w-full sm:w-auto">
+                    <button onclick="setFilter('all')" data-filter="all" class="filter-btn flex-1 px-4 py-1.5 rounded-md text-sm font-medium transition-all bg-white dark:bg-slate-800 shadow-sm">Todas</button>
+                    <button onclick="setFilter('pending')" data-filter="pending" class="filter-btn flex-1 px-4 py-1.5 rounded-md text-sm font-medium transition-all text-slate-500">Pendientes</button>
+                    <button onclick="setFilter('completed')" data-filter="completed" class="filter-btn flex-1 px-4 py-1.5 rounded-md text-sm font-medium transition-all text-slate-500">Hechas</button>
+                </div>
+                <input type="text" id="search-input" placeholder="Buscar tarea..." 
+                       class="w-full sm:w-64 p-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 ring-indigo-500 outline-none">
+            </section>
+
+            <section class="task-list">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Mis Tareas</h2>
+                    <button onclick="clearCompleted()" class="text-xs text-red-500 hover:underline font-medium">Borrar completadas</button>
+                </div>
+                
+                <div id="task-container" class="space-y-4" aria-live="polite">
+                    </div>
+            </section>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
