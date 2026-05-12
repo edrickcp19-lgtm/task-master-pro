@@ -1,0 +1,32 @@
+import { EstadoMatricula } from './domain'; // Asegúrate de que la ruta sea correcta
+
+/**
+ * FUNCIÓN: generarReporte
+ * Propósito: Demostrar el uso de Uniones Discriminadas y el tipo 'never'
+ * para garantizar que todos los estados posibles sean manejados.
+ */
+export function generarReporte(estado: EstadoMatricula): string {
+    switch (estado.tipo) {
+        case "ACTIVA":
+            // Gracias al discriminante "ACTIVA", TypeScript sabe que 'asignaturas' existe
+            return `El estudiante tiene ${estado.asignaturas.length} asignaturas inscritas.`;
+
+        case "SUSPENDIDA":
+            // Aquí sabe que debe existir la propiedad 'motivo'
+            return `Atención: Matrícula suspendida por: ${estado.motivo}.`;
+
+        case "FINALIZADA":
+            // Aquí tiene acceso a 'notaMedia'
+            return `Ciclo terminado con una nota media de: ${estado.notaMedia}.`;
+
+        default:
+            /**
+             * JUSTIFICACIÓN ARQUITECTÓNICA (Análisis Exhaustivo):
+             * Si en el futuro añades un nuevo estado a la unión (ej: "RETIRADA") 
+             * y no lo programas en este switch, la siguiente línea dará un 
+             * ERROR DE COMPILACIÓN. Esto evita errores en tiempo de ejecución.
+             */
+            const _comprobacionExhaustiva: never = estado;
+            return _comprobacionExhaustiva;
+    }
+}
