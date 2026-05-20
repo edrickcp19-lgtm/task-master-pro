@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { KanbanColumn } from '../components/KanbanColumn';
 import { useTasks } from '../hooks/useTasks';
-import { TaskPriority } from '../types';
+import  type { TaskPriority } from '../types';
 
 export const Dashboard: React.FC = () => {
-  const { tasks, isLoading, addTask, updateTaskStatus, deleteTask } = useTasks();
+  const { tasks, addTask, updateTaskStatus, deleteTask } = useTasks();
 
   // Estados locales para el formulario de nueva tarea
   const [title, setTitle] = useState('');
@@ -15,19 +15,11 @@ export const Dashboard: React.FC = () => {
     e.preventDefault();
     if (!title.trim()) return;
     
-    addTask(title, description, priority);
+    addTask({title, description, priority});
     setTitle('');
     setDescription('');
     setPriority('MEDIA');
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
-        <p className="text-slate-500 font-medium text-lg animate-pulse">Cargando tu tablero Kanban...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-slate-100 p-6 md:p-10">

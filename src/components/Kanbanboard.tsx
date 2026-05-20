@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTasks } from '../context/TaskContext';
-import type { TaskStatus } from '../context/TaskContext';
 import { KanbanColumn } from './KanbanColumn';
 
 export const KanbanBoard: React.FC = () => {
